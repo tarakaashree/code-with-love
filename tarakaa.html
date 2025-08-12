@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eric 🩷 Tarakaa - Love Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: url("https://www.disneyclips.com/images/images/angel-hugging-stitch.png") no-repeat center/cover;
+      margin: 0;
+      color: #d63384;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    .page {
+      padding: 20px;
+      max-width: 450px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 10;
+    }
+    .btn {
+      background-color: #ff4d94;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      font-size: 18px;
+      cursor: pointer;
+      margin: 15px 0;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #e60073;
+    }
+    #puzzle-container {
+      width: 100%;
+      max-width: 360px;
+      aspect-ratio: 1 / 1;
+      margin: 20px auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 4px;
+      user-select: none;
+    }
+    .puzzle-piece {
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transform: scale(0.8);
+      transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 0 5px #d63384aa;
+    }
+    .puzzle-piece.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    #question-container h2 {
+      color: #ff69b4;
+      margin-bottom: 5px;
+    }
+    #question-container h3 {
+      color: white;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+    #question-container label {
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #question-container label:hover {
+      color: #ff85b1;
+    }
+    /* Responsive text */
+    @media (max-width: 400px) {
+      .btn {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+      #question-container label {
+        font-size: 14px;
+      }
+    }
+
+    /* Heart shower container */
+    #heart-shower {
+      position: fixed;
+      pointer-events: none;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: visible;
+      z-index: 9999;
+    }
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 18px;
+      background-color: #ff4d94;
+      transform: rotate(-45deg);
+      animation: fall 4s linear forwards;
+      opacity: 0.85;
+      filter: drop-shadow(0 0 2px #d63384);
+      /* Heart shape from two circles and a square */
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 18px;
+      background-color: #ff4d94;
+      border-radius: 50%;
+    }
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+    .heart::after {
+      left: 10px;
+      top: 0;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(-45deg) scale(1);
+        opacity: 0.85;
+      }
+      100% {
+        transform: translateY(100vh) rotate(45deg) scale(0.7);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Start Page -->
+  <div id="start-page" class="page">
+    <h1>ERIC 💖 TARAKAA</h1>
+    <button class="btn" id="btn-start">I Love You Baby😘</button>
+  </div>
+
+  <!-- Quiz Page -->
+  <div id="quiz-page" class="page" style="display:none;">
+    <div id="question-container"></div>
+    <button class="btn" id="btn-next">Press🥰💕</button>
+
+    <!-- Puzzle shown live during quiz -->
+    <div id="puzzle-container">
+      <img src="https://i.postimg.cc/bNNwqZVf/P1.jpg" id="piece1" class="puzzle-piece" alt="Puzzle piece 1" />
+      <img src="https://i.postimg.cc/brrWBfgW/P2.jpg" id="piece2" class="puzzle-piece" alt="Puzzle piece 2" />
+      <img src="https://i.postimg.cc/d1HSdSFB/P3.jpg" id="piece3" class="puzzle-piece" alt="Puzzle piece 3" />
+      <img src="https://i.postimg.cc/Sx6TVKqj/P4.jpg" id="piece4" class="puzzle-piece" alt="Puzzle piece 4" />
+      <img src="https://i.postimg.cc/1RgZBDdt/P5.jpg" id="piece5" class="puzzle-piece" alt="Puzzle piece 5" />
+      <img src="https://i.postimg.cc/g2pFGQ2X/P6.jpg" id="piece6" class="puzzle-piece" alt="Puzzle piece 6" />
+      <img src="https://i.postimg.cc/Jzr66Lhq/P7.jpg" id="piece7" class="puzzle-piece" alt="Puzzle piece 7" />
+      <img src="https://i.postimg.cc/T3N9t5Fd/P8.jpg" id="piece8" class="puzzle-piece" alt="Puzzle piece 8" />
+      <img src="https://i.postimg.cc/6pqV453D/P9.jpg" id="piece9" class="puzzle-piece" alt="Puzzle piece 9" />
+    </div>
+  </div>
+
+  <!-- End Page -->
+  <div id="end-page" class="page" style="display:none;">
+    <h2 id="final-message"></h2>
+    <div id="final-puzzle"></div>
+    <button class="btn" id="btn-restart">Restart</button>
+  </div>
+
+  <!-- Heart shower container -->
+  <div id="heart-shower"></div>
+
+<script>
+  const quizData = [
+    { question: "What is my Love language?", options: ["Scolding you","Make fun of you","Pampering you"], answer: 1 },
+    { question: "When did we first meet? (outside school)", options: ["12 feb 2022","26 dec 2022","23 oct 2022"], answer: 2 },
+    { question: "Best way to console me?", options: ["Pamper Me","Advice Me","Buy me my fav food"], answer: 0 },
+    { question: "What do I overthink too much? (our relationship)", options: ["Afraid of Losing you","You choosing another girl","You forgetting about us"], answer: 0 },
+    { question: "What do I do when upset/worried?", options: ["Polambifying","Eat","Sleep"], answer: 2 },
+    { question: "What makes me feel loved?", options: ["Prioritizing me when busy","Long texts","Telling others you love me"], answer: 0 },
+    { question: "Which nickname do I love?", options: ["Babyyy","Mae","Karadi Ma"], answer: 2 },
+    { question: "What is my dream date?", options: ["Cuddling with you","Candlelight dinner","Expensive trip"], answer: 0 },
+    { question: "Which surprise do I love most?", options: ["Expensive gifts","Surprise visit","Handmade craft"], answer: 1 }
+  ];
+
+  let current = 0, score = 0;
+  let unrevealed = Array.from({ length: 9 }, (_, i) => i + 1);
+
+  const startPage = document.getElementById("start-page");
+  const quizPage = document.getElementById("quiz-page");
+  const endPage = document.getElementById("end-page");
+
+  const questionContainer = document.getElementById("question-container");
+  const puzzleContainer = document.getElementById("puzzle-container");
+  const finalPuzzleContainer = document.getElementById("final-puzzle");
+  const finalMessage = document.getElementById("final-message");
+  const heartShower = document.getElementById("heart-shower");
+
+  document.getElementById("btn-start").addEventListener("click", () => {
+    startPage.style.display = "none";
+    quizPage.style.display = "block";
+    showQuestion();
+  });
+
+  document.getElementById("btn-next").addEventListener("click", () => {
+    const sel = document.querySelector('input[name="answer"]:checked');
+    if (!sel) return alert("Please select an answer 💖");
+
+    if (+sel.value === quizData[current].answer) {
+      score++;
+      revealRandomPiece();
+    }
+
+    current++;
+    if (current < quizData.length) {
+      setTimeout(showQuestion, 100);
+    } else {
+      setTimeout(endQuiz, 400);
+    }
+  });
+
+  function revealRandomPiece() {
+    if (unrevealed.length > 0) {
+      const idx = Math.floor(Math.random() * unrevealed.length);
+      const num = unrevealed.splice(idx, 1)[0];
+      const piece = document.getElementById(`piece${num}`);
+      setTimeout(() => piece.classList.add("visible"), 50);
+    }
+  }
+
+  function showQuestion() {
+    const q = quizData[current];
+    questionContainer.innerHTML = `
+      <h2>Way to my heart…💋</h2>
+      <h3>${q.question}</h3>
+      ${q.options.map((opt, i) => `
+        <label><input type="radio" name="answer" value="${i}"> ${opt}</label><br>
+      `).join("")}
+    `;
+  }
+
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+    heart.style.fontSize = (12 + Math.random() * 24) + "px";
+    heart.style.opacity = 0.7 + Math.random() * 0.3;
+    heartShower.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 5000);
+  }
+
+  function startHeartShower() {
+    const interval = setInterval(createHeart, 150);
+
+    // Stop shower after 6 seconds
+    setTimeout(() => {
+      clearInterval(interval);
+    }, 6000);
+  }
+
+  function endQuiz() {
+    quizPage.style.display = "none";
+    endPage.style.display = "block";
+
+    // Clone puzzle with revealed pieces for final page
+    const puzzleClone = puzzleContainer.cloneNode(true);
+    finalPuzzleContainer.innerHTML = "";
+    finalPuzzleContainer.appendChild(puzzleClone);
+
+    // Reveal missing pieces with animation and sparkle effect
+    const finalPieces = puzzleClone.querySelectorAll(".puzzle-piece");
+    finalPieces.forEach((piece, idx) => {
+      if (!piece.classList.contains("visible")) {
+        setTimeout(() => {
+          piece.classList.add("visible");
+          piece.style.transition = "opacity 1.2s ease, transform 1.2s ease";
+          piece.style.transform = "scale(1.1)";
+          setTimeout(() => {
+            piece.style.transform = "scale(1)";
+          }, 900);
+        }, 400 + idx * 300);
+      }
+    });
+
+    // Romantic final messages by score
+    let message = "";
+    if (score === quizData.length) {
+      message = "You know me so well ❤️ You’re my soulmate!";
+    } else if (score >= quizData.length * 0.6) {
+      message = "You know me… but there’s more to learn 😘";
+    } else {
+      message = "Time for a romantic crash course in ME! 💋";
+    }
+    finalMessage.innerHTML = `You scored ${score} of ${quizData.length}!<br>${message}`;
+
+    // Start heart shower animation
+    startHeartShower();
+  }
+
+  document.getElementById("btn-restart").addEventListener("click", () => {
+    current = 0;
+    score = 0;
+    unrevealed = Array.from({ length: 9 }, (_, i) => i + 1);
+    document.querySelectorAll(".puzzle-piece").forEach(el => el.classList.remove("visible"));
+    finalPuzzleContainer.innerHTML = "";
+    endPage.style.display = "none";
+    startPage.style.display = "block";
+
+    // Clear any hearts on restart
+    heartShower.innerHTML = "";
+  });
+</script>
+</body>
+</html>
